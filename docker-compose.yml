@@ -1,0 +1,42 @@
+version: "3.8"
+
+services:
+  server:
+    build:
+      context: ./apps/server
+    container_name: server
+    ports:
+      - "${PORT}:${PORT}"
+    environment:
+      - PORT=${PORT}
+      - REDIS_CLIENT=${REDIS_CLIENT}
+    depends_on:
+      - redis
+
+  websocket:
+    build:
+      context: ./apps/web-socket-server
+    container_name: websocket
+    ports:
+      - "${WS_PORT}:${WS_PORT}"
+    environment:
+      - PORT=${WS_PORT}
+      - REDIS_CLIENT=${REDIS_CLIENT}
+    depends_on:
+      - redis
+
+  worker:
+    build:
+      context: ./apps/worker
+    container_name: worker
+    environment:
+      - REDIS_CLIENT=${REDIS_CLIENT}
+    depends_on:
+      - redis
+
+  redis:
+    image: redis:7-alpine
+    container_name: redis
+    ports:
+      - "6380:6379"
+    command: redis-server --requirepass password
