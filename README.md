@@ -111,6 +111,8 @@ type => Message type # you can understand types it is explained payload message.
 
 7. Check the message response on web socket connection of postman.
 
+---
+
 ## 🐞 Issues/ Upcoming Features
 
 - Delivery Acknowledgment from `queue` and `pub/sub`.
